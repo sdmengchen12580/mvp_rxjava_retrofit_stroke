@@ -1,0 +1,11 @@
+1.导入tools文件夹到根目录
+2.根目录配置
+ext {
+    compileSdkVersion = 25
+    buildToolsVersion = "25.0.2"
+    targetSdkVersion = 25
+
+    //与编译项目根gradle，配置相同
+    versionCode = 800102
+    versionName = "0.8.1.2"
+}

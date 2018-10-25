@@ -6,9 +6,15 @@
     android:orientation="vertical"
     tools:context="com.bihucj.mcandroid.ui.MainActivity">
 
+    <Button
+        android:id="@+id/bt"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50dp" />
 
     <ListView
         android:id="@+id/lv_date"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="@dimen/_100dp"/>
+
+
 </LinearLayout>

@@ -30,3 +30,14 @@ ext {
     targetSdkVersion = 26
     daggerVersion = '2.4'
 }
+
+ext {
+    compileSdkVersion = 25
+    buildToolsVersion = "25.0.2"
+    targetSdkVersion = 25
+
+    //与
+    versionCode = 800102
+    versionName = "0.8.1.2"
+}
+
