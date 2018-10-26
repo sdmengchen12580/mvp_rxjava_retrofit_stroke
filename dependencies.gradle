@@ -1,0 +1,50 @@
+def supportVersion = "26.0.0-alpha1"
+def glideVersion = "3.7.0"
+def viselogVersion = "1.1.2"
+def retrofit2Version = "2.1.0"
+def rxJavaVersion = "1.1.0"
+def rxAndroidVersion = "1.1.0"
+def okhttp3Version = "3.7.0"
+def eventbusVersion = "3.0.0"
+def butterknifeVersion = "8.5.1"
+
+project.ext {
+    android = [
+            compileSdkVersion: 26,
+            buildToolsVersion: "27.0.3",
+            applicationId    : "com.bihucj.mcandroid",
+            minSdkVersion    : 19,
+            targetSdkVersion : 26,
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    dependencies = [
+            //android support or view
+            "support-v4"              : "com.android.support:support-v4:${supportVersion}",
+            "appcompat"               : "com.android.support:appcompat-v7:${supportVersion}",
+            "design"                  : "com.android.support:design:${supportVersion}",
+            "cardview-v7"             : "com.android.support:cardview-v7:${supportVersion}",
+            "recyclerview-v7"         : "com.android.support:recyclerview-v7:${supportVersion}",
+            //butterknife
+            "butterknife"             : "com.jakewharton:butterknife:${butterknifeVersion}",
+            "butterknife-compiler"    : "com.jakewharton:butterknife-compiler:${butterknifeVersion}",
+            //图片加载
+            "glide"                   : "com.github.bumptech.glide:glide:${glideVersion}",
+            //日志
+            "viselog"                 : "com.android.support:recyclerview-v7:${viselogVersion}",
+            //retrofit2
+            "retrofit"                : "com.squareup.retrofit2:retrofit:${retrofit2Version}",
+            "converter-gson"          : "com.squareup.retrofit2:converter-gson:${retrofit2Version}",
+            "adapter-rxjava"          : "com.squareup.retrofit2:adapter-rxjava:${retrofit2Version}",
+            //rxjava
+            "rxjava"                  : "io.reactivex:rxjava:${rxJavaVersion}",
+            //rxandroid
+            "rxandroid"               : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            //okhttp3
+            "interceptor"             : "com.squareup.okhttp3:logging-interceptor:${okhttp3Version}",
+            //eventbus
+            "eventbus"                : "org.greenrobot:eventbus:${eventbusVersion}",
+    ]
+
+}

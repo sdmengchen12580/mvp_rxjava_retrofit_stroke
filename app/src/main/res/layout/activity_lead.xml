@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.bihucj.mcandroid.ui.HomeActivity">
+    tools:context="com.bihucj.mcandroid.ui.LeadActivity">
 
-    <ListView
-        android:id="@+id/lv_date"
+    <ImageView
+        android:id="@+id/img_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/homeact_orange_bg" />
 
 </LinearLayout>
