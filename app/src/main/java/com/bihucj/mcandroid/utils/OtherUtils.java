@@ -9,6 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by 孟晨 on 2018/10/26.
  */
@@ -62,5 +66,20 @@ public class OtherUtils {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(frameId, fra);
         transaction.commit();
+    }
+
+    /**
+     * 省略订阅执行
+     */
+    public static class RxSchedulerUtils {
+        public static <T> Observable.Transformer<T, T> io_main() {
+            return new Observable.Transformer<T, T>() {
+                @Override
+                public Observable<T> call(Observable<T> tObservable) {
+                    return tObservable.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread());
+                }
+            };
+        }
     }
 }

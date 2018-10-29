@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context="com.bihucj.mcandroid.ui.HomeActivity">
 
+    <ViewStub
+        android:id="@+id/request_date_null_layout"
+        android:layout="@layout/request_date_null_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"

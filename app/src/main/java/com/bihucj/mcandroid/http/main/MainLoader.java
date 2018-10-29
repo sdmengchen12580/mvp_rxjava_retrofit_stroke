@@ -1,5 +1,8 @@
 package com.bihucj.mcandroid.http.main;
 
+import com.bihucj.mcandroid.http.main.bean.GetGoodsVarietyCodesBean;
+import com.bihucj.mcandroid.utils.OtherUtils;
+
 import org.lcsyjt.mylibrary.http.RetrofitManager;
 import org.lcsyjt.mylibrary.http.callback.HttpListener;
 
@@ -26,8 +29,7 @@ public class MainLoader {
 
     public Subscription getBd(HttpListener httpListener) {
         getType = mainApi.getType()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(OtherUtils.RxSchedulerUtils.<GetGoodsVarietyCodesBean>io_main())
                 .subscribe(httpListener);
         return getType;
     }

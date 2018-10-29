@@ -4,16 +4,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.bihucj.mcandroid.R;
 import com.bihucj.mcandroid.adapter.GetHomeDateAdapter;
-import com.bihucj.mcandroid.base.baseui.BaseActivity;
+import com.bihucj.mcandroid.base.baseui.BaseMvpActivity;
 import com.bihucj.mcandroid.http.main.bean.GetGoodsVarietyCodesBean;
-import com.bihucj.mcandroid.mvp.Presenter.MainPresenter;
-import com.bihucj.mcandroid.mvp.view.IDateView;
+import com.bihucj.mcandroid.mvp.mainmvp.MainCompany.IMainView;
+import com.bihucj.mcandroid.mvp.mainmvp.MainPresenter;
 import com.bihucj.mcandroid.utils.ToastUtils;
 import com.bihucj.mcandroid.weight.dialog.LoadDialog;
 import com.bihucj.mcandroid.weight.refesh.CustomRefreshFooter;
@@ -29,13 +26,12 @@ import butterknife.BindView;
 
 import static com.bihucj.mcandroid.R.style.translatedialog;
 
-public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateView>> implements IDateView {
+public class HomeActivity extends BaseMvpActivity<IMainView, MainPresenter<IMainView>> implements IMainView {
 
     @BindView(R.id.rv_date)
     RecyclerView rvDate;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout smartRefreshLayout;
-    private View scrollFooter;
     private GetHomeDateAdapter getHomeDateAdapter;
 
     @Override
@@ -47,9 +43,6 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
     protected void initView(Bundle savedInstanceState) {
         //rv
         rvDate.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-        //footer
-        View footerLayout = getLayoutInflater().inflate(R.layout.pull_up_loading_footer, rvDate, false);
-        scrollFooter = (LinearLayout) footerLayout.findViewById(R.id.pull_to_linear);
         //刷新
         smartRefreshLayout.setRefreshHeader(new CustomRefreshHeader(HomeActivity.this));
         smartRefreshLayout.setRefreshFooter(new CustomRefreshFooter(HomeActivity.this));
@@ -58,7 +51,6 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
         smartRefreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                scrollFooter.setVisibility(View.GONE);
                 selfPresenter.getDate(true);
                 refreshlayout.getLayout().postDelayed(new Runnable() {
                     @Override
@@ -67,7 +59,7 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
                         refreshlayout.setLoadmoreFinished(false);//恢复上拉状态
                         refreshlayout.setEnableLoadmore(true); //可以加载更多
                     }
-                }, 2000);
+                }, 1000);
             }
 
             @Override
@@ -81,8 +73,6 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
                 }, 1000);
             }
         });
-
-
     }
 
     @Override
@@ -92,10 +82,11 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
 
     //告知BaseActivity你的业务类
     @Override
-    public MainPresenter<IDateView> choicePresenter() {
+    public MainPresenter<IMainView> choicePresenter() {
         return new MainPresenter<>();
     }
 
+    //手动p m层解绑
     @Override
     protected void onStop() {
         super.onStop();
@@ -110,13 +101,23 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
     }
 
     @Override
+    public void showNullView() {
+        LoadDialog.getInstance(HomeActivity.this, translatedialog).closeDialog();
+        smartRefreshLayout.setEnableLoadmore(false);
+        smartRefreshLayout.setEnableRefresh(false);
+        rvDate.setVisibility(View.GONE);
+        smartRefreshLayout.setVisibility(View.GONE);
+        findViewById(R.id.request_date_null_layout).setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void showDate(GetGoodsVarietyCodesBean date, boolean isRefresh) {
         LoadDialog.getInstance(HomeActivity.this, translatedialog).closeDialog();
         //无数据-不用加载更多
         int dateCount = date.getData().getResponse().getRows().size();
-        if (dateCount == 0) {
+        //后台分页接口返回数据为0-10
+        if (dateCount < 10) {
             smartRefreshLayout.setEnableLoadmore(false);
-            return;
         }
         //数据
         List<String> list = new ArrayList<>();

@@ -2,10 +2,8 @@ package com.bihucj.mcandroid.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.bihucj.mcandroid.R;
-import com.bihucj.mcandroid.custom.Config;
 import com.bihucj.mcandroid.utils.OtherUtils;
 
 import java.util.concurrent.TimeUnit;
