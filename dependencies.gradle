@@ -7,6 +7,7 @@ def rxAndroidVersion = "1.1.0"
 def okhttp3Version = "3.7.0"
 def eventbusVersion = "3.0.0"
 def butterknifeVersion = "8.5.1"
+def smartRefreshVersion = "1.0.4-7"
 
 project.ext {
     android = [
@@ -21,30 +22,33 @@ project.ext {
 
     dependencies = [
             //android support or view
-            "support-v4"              : "com.android.support:support-v4:${supportVersion}",
-            "appcompat"               : "com.android.support:appcompat-v7:${supportVersion}",
-            "design"                  : "com.android.support:design:${supportVersion}",
-            "cardview-v7"             : "com.android.support:cardview-v7:${supportVersion}",
-            "recyclerview-v7"         : "com.android.support:recyclerview-v7:${supportVersion}",
+            "support-v4"          : "com.android.support:support-v4:${supportVersion}",
+            "appcompat"           : "com.android.support:appcompat-v7:${supportVersion}",
+            "design"              : "com.android.support:design:${supportVersion}",
+            "cardview-v7"         : "com.android.support:cardview-v7:${supportVersion}",
+            "recyclerview-v7"     : "com.android.support:recyclerview-v7:${supportVersion}",
             //butterknife
-            "butterknife"             : "com.jakewharton:butterknife:${butterknifeVersion}",
-            "butterknife-compiler"    : "com.jakewharton:butterknife-compiler:${butterknifeVersion}",
+            "butterknife"         : "com.jakewharton:butterknife:${butterknifeVersion}",
+            "butterknife-compiler": "com.jakewharton:butterknife-compiler:${butterknifeVersion}",
             //图片加载
-            "glide"                   : "com.github.bumptech.glide:glide:${glideVersion}",
+            "glide"               : "com.github.bumptech.glide:glide:${glideVersion}",
             //日志
-            "viselog"                 : "com.android.support:recyclerview-v7:${viselogVersion}",
+            "viselog"             : "com.android.support:recyclerview-v7:${viselogVersion}",
             //retrofit2
-            "retrofit"                : "com.squareup.retrofit2:retrofit:${retrofit2Version}",
-            "converter-gson"          : "com.squareup.retrofit2:converter-gson:${retrofit2Version}",
-            "adapter-rxjava"          : "com.squareup.retrofit2:adapter-rxjava:${retrofit2Version}",
+            "retrofit"            : "com.squareup.retrofit2:retrofit:${retrofit2Version}",
+            "converter-gson"      : "com.squareup.retrofit2:converter-gson:${retrofit2Version}",
+            "adapter-rxjava"      : "com.squareup.retrofit2:adapter-rxjava:${retrofit2Version}",
             //rxjava
-            "rxjava"                  : "io.reactivex:rxjava:${rxJavaVersion}",
+            "rxjava"              : "io.reactivex:rxjava:${rxJavaVersion}",
             //rxandroid
-            "rxandroid"               : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            "rxandroid"           : "io.reactivex:rxandroid:${rxAndroidVersion}",
             //okhttp3
-            "interceptor"             : "com.squareup.okhttp3:logging-interceptor:${okhttp3Version}",
+            "interceptor"         : "com.squareup.okhttp3:logging-interceptor:${okhttp3Version}",
             //eventbus
-            "eventbus"                : "org.greenrobot:eventbus:${eventbusVersion}",
+            "eventbus"            : "org.greenrobot:eventbus:${eventbusVersion}",
+            //刷新
+            "smartRefreshheader"        : "com.scwang.smartrefresh:SmartRefreshHeader:${smartRefreshVersion}",
+            "smartRefreshlayout"        : "com.scwang.smartrefresh:SmartRefreshLayout:${smartRefreshVersion}"
     ]
 
 }

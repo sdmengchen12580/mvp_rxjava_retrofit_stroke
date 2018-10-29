@@ -2,6 +2,8 @@ package com.bihucj.mcandroid.mvp.view;
 
 import com.bihucj.mcandroid.http.main.bean.GetGoodsVarietyCodesBean;
 
+import java.io.BufferedOutputStream;
+
 /**
  * Created by 孟晨 on 2018/9/19.
  */
@@ -12,7 +14,7 @@ public interface IDateView {
 
     void showLoading();
 
-    void showDate(GetGoodsVarietyCodesBean bean);
+    void showDate(GetGoodsVarietyCodesBean bean, boolean isRefresh);
 
     void showFail(String errorMsg);
 }

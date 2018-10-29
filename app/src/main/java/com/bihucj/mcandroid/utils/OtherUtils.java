@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 /**
  * Created by 孟晨 on 2018/10/26.
@@ -42,5 +45,22 @@ public class OtherUtils {
         }
     }
 
+    /**
+     * 转换px dp
+     */
+    public static class DensityUtil {
+        public static float dip2px(Context context, float dpValue) {
+            float scale = context.getResources().getDisplayMetrics().density;
+            return dpValue * scale;
+        }
+    }
 
+    /**
+     * fragment
+     */
+    public static void addFragmentToActivity(FragmentManager fm, Fragment fra, int frameId) {
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.add(frameId, fra);
+        transaction.commit();
+    }
 }

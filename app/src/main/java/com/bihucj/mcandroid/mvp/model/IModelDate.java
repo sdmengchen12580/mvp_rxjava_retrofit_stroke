@@ -14,7 +14,7 @@ import rx.Subscription;
 public class IModelDate implements ModelDate {
 
     @Override
-    public Subscription loadDate(final LoadDateListener loadDateListener) {
+    public Subscription loadDate(int page,final LoadDateListener loadDateListener) {
         Subscription subscription = null;
         HttpListener<GetGoodsVarietyCodesBean> httpListener = new HttpListener<GetGoodsVarietyCodesBean>() {
             @Override

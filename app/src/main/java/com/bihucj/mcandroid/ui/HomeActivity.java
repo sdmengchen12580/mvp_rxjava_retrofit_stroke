@@ -1,33 +1,43 @@
 package com.bihucj.mcandroid.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.bihucj.mcandroid.R;
+import com.bihucj.mcandroid.adapter.GetHomeDateAdapter;
 import com.bihucj.mcandroid.base.baseui.BaseActivity;
 import com.bihucj.mcandroid.http.main.bean.GetGoodsVarietyCodesBean;
-import com.bihucj.mcandroid.R;
 import com.bihucj.mcandroid.mvp.Presenter.MainPresenter;
 import com.bihucj.mcandroid.mvp.view.IDateView;
-
-import static com.bihucj.mcandroid.R.style.translatedialog;
-
 import com.bihucj.mcandroid.utils.ToastUtils;
-import com.bihucj.mcandroid.weight.LoadDialog;
+import com.bihucj.mcandroid.weight.dialog.LoadDialog;
+import com.bihucj.mcandroid.weight.refesh.CustomRefreshFooter;
+import com.bihucj.mcandroid.weight.refesh.CustomRefreshHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
+import static com.bihucj.mcandroid.R.style.translatedialog;
+
 public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateView>> implements IDateView {
 
+    @BindView(R.id.rv_date)
+    RecyclerView rvDate;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout smartRefreshLayout;
+    private View scrollFooter;
+    private GetHomeDateAdapter getHomeDateAdapter;
 
-    //FIXME 1.先知道ui界面需要定义什么接口  如IDateView
-    //FIXME 2.写自己业务类 MainPresenter，由于封装到BaseActivity，只需要将本activity的choicePresenter()填入你的业务类
-    //FIXME 3.想model数据层，定义接口ModelDate，获取数据。通过ModelDate实现类去请求数据，以及结果的返回给业务层
-    //FIXME 4.业务层通过接口IDateView，通知更新UI
-
-    //FIXME:解释：
-    //FIXME 5.IModelDate中选择将数据通过接口的形式返回，是为了不让P层等待，数据好了立即通知，及可。如果用return将数据返回就会等待
-    //FIXME 6.解绑：v和p层解绑在BaseActivity，p层和m层解绑，在activity的onStop
     @Override
     protected int getViewId() {
         return R.layout.activity_main;
@@ -35,11 +45,49 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        //rv
+        rvDate.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+        //footer
+        View footerLayout = getLayoutInflater().inflate(R.layout.pull_up_loading_footer, rvDate, false);
+        scrollFooter = (LinearLayout) footerLayout.findViewById(R.id.pull_to_linear);
+        //刷新
+        smartRefreshLayout.setRefreshHeader(new CustomRefreshHeader(HomeActivity.this));
+        smartRefreshLayout.setRefreshFooter(new CustomRefreshFooter(HomeActivity.this));
+        smartRefreshLayout.setEnableScrollContentWhenLoaded(true);//是否在加载完成时滚动列表显示新的内容
+        smartRefreshLayout.setDisableContentWhenLoading(false);
+        smartRefreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onRefresh(final RefreshLayout refreshlayout) {
+                scrollFooter.setVisibility(View.GONE);
+                selfPresenter.getDate(true);
+                refreshlayout.getLayout().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshlayout.finishRefresh();
+                        refreshlayout.setLoadmoreFinished(false);//恢复上拉状态
+                        refreshlayout.setEnableLoadmore(true); //可以加载更多
+                    }
+                }, 2000);
+            }
+
+            @Override
+            public void onLoadmore(final RefreshLayout refreshlayout) {
+                refreshlayout.getLayout().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        selfPresenter.getDate(false);
+                        refreshlayout.finishLoadmore();
+                    }
+                }, 1000);
+            }
+        });
+
+
     }
 
     @Override
     protected void initDate() {
-        selfPresenter.getDate();
+        selfPresenter.getDate(true);
     }
 
     //告知BaseActivity你的业务类
@@ -62,14 +110,31 @@ public class HomeActivity extends BaseActivity<IDateView, MainPresenter<IDateVie
     }
 
     @Override
-    public void showDate(GetGoodsVarietyCodesBean date) {
+    public void showDate(GetGoodsVarietyCodesBean date, boolean isRefresh) {
         LoadDialog.getInstance(HomeActivity.this, translatedialog).closeDialog();
-        //数据展示
+        //无数据-不用加载更多
+        int dateCount = date.getData().getResponse().getRows().size();
+        if (dateCount == 0) {
+            smartRefreshLayout.setEnableLoadmore(false);
+            return;
+        }
+        //数据
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < date.getData().getResponse().getRows().size(); i++) {
+        for (int i = 0; i < dateCount; i++) {
             list.add(date.getData().getResponse().getRows().get(i).getCodeName());
         }
-        ((ListView) findViewById(R.id.lv_date)).setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, list));
+        //首次直接加载date 不管isRefresh
+        if (getHomeDateAdapter == null) {
+            getHomeDateAdapter = new GetHomeDateAdapter(HomeActivity.this, list);
+            rvDate.setAdapter(getHomeDateAdapter);
+            return;
+        }
+        //非首次的刷新  or  加载
+        if (isRefresh) {
+            getHomeDateAdapter.refreshData(list);
+        } else {
+            getHomeDateAdapter.addBottomData(list);
+        }
     }
 
     @Override

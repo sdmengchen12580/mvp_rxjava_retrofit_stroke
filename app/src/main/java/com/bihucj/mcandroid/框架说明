@@ -1,0 +1,8 @@
+    //FIXME 1.先知道ui界面需要定义什么接口  如IDateView
+    //FIXME 2.写自己业务类 MainPresenter，由于封装到BaseActivity，只需要将本activity的choicePresenter()填入你的业务类
+    //FIXME 3.想model数据层，定义接口ModelDate，获取数据。通过ModelDate实现类去请求数据，以及结果的返回给业务层
+    //FIXME 4.业务层通过接口IDateView，通知更新UI
+
+    //FIXME:解释：
+    //FIXME 5.IModelDate中选择将数据通过接口的形式返回，是为了不让P层等待，数据好了立即通知，及可。如果用return将数据返回就会等待
+    //FIXME 6.解绑：v和p层解绑在BaseActivity，p层和m层解绑，在activity的onStop

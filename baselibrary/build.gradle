@@ -35,4 +35,6 @@ dependencies {
     compile rootProject.ext.dependencies["rxandroid"]
     compile rootProject.ext.dependencies["interceptor"]
     compile rootProject.ext.dependencies["eventbus"]
+    compile rootProject.ext.dependencies["smartRefreshheader"]
+    compile rootProject.ext.dependencies["smartRefreshlayout"]
 }

@@ -1,0 +1,4 @@
+app:srlAccentColor="#00000000"//设置Header主题颜色
+app:srlPrimaryColor="#00000000"//设置Footer主题颜色
+app:srlEnablePreviewInEditMode="true"//开启和关闭预览功能
+

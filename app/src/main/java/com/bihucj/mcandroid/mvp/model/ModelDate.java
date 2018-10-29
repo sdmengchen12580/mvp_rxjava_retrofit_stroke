@@ -8,7 +8,7 @@ import rx.Subscription;
 
 public interface ModelDate {
 
-    Subscription loadDate(LoadDateListener loadDateListener);
+    Subscription loadDate(int page,LoadDateListener loadDateListener);
 
     interface LoadDateListener {
         //FIXME code=0 失败
